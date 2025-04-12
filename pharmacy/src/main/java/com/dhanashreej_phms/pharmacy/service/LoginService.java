@@ -11,7 +11,10 @@ public class LoginService {
     @Autowired
     private LoginRepo rep;
     public Login log(String username,String password,String role){
-        
-
+        return rep.findByUsernamePasswordAndRole(username,password,role);
+    
+    }
+    public Login findByUsername(String username){
+        return rep.findById(username).orElse(null);
     }
 }

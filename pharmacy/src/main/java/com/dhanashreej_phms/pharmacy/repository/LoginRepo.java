@@ -7,5 +7,5 @@ import com.dhanashreej_phms.pharmacy.domain.Login;
 @Repository
 
 public interface LoginRepo extends JpaRepository<Login,String> {
-    
+    Login findByUsernamePasswordAndRole(String username,String password,String role);
 }

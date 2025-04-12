@@ -2,6 +2,7 @@ package com.dhanashreej_phms.pharmacy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 import com.dhanashreej_phms.pharmacy.service.NewUserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class NewUserController {
         return "newuser";
     }
     @PostMapping("path")
-    public String newuser(@RequestBody String username,@RequestParam password,@RequestParam role,Model mod) {
+    public String newuser(@RequestBody String username,@RequestParam String password,@RequestParam String role,Model mod) {
         //TODO: process POST request
         boolean isregistered=service.register(username,password,role);
         if(isregistered)
@@ -33,8 +34,6 @@ public class NewUserController {
             mod.addAttribute("error","User already exists");
             return "newuser";
         }
-        
-        return entity;
     }
     
     

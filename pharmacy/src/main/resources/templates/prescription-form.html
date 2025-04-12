@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Prescription</title>
+</head>
+<body>
+
+    <h1>Create Prescription</h1>
+    <form action="/prescriptions/add" method="POST">
+        <label for="patientName">Patient Name:</label>
+        <input type="text" id="patientName" name="patientName" required>
+
+        <label for="medicationId">Select Medication:</label>
+        <select id="medicationId" name="medicationId" required>
+            <option value="">Select Medication</option>
+            <th:block th:each="medication : ${medications}">
+                <option th:value="${medication.id}" th:text="${medication.name}"></option>
+            </th:block>
+        </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required>
+        
+        <label for="pharmacistUsername">Pharmacist Username:</label>
+        <input type="text" id="pharmacistUsername" name="pharmacistUsername" required>
+
+
+        <button type="submit">Prescribe</button>
+    </form>
+
+</body>
+</html>

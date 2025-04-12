@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f7fc;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 100px);
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Delete Product from Inventory</h1>
+
+    <div class="container">
+        <div class="form-container">
+            <form action="/delete-inventory" method="POST">
+                <label for="productName">Enter Product Name to Delete:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <input type="submit" value="Delete Product">
+            </form>
+
+            <a href="inventory_management.html">Back to Inventory Management</a>
+        </div>
+    </div>
+
+</body>
+</html>
