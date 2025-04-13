@@ -24,4 +24,8 @@ public class PrescriptionService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+    public int getTotalCount() {
+        return (int) repo.count();
+    }
+    
 }

@@ -20,4 +20,12 @@ public class SaleService {
     public void save(Sale sale) {
         repo.save(sale);
     }
+    public double getTotalSales() {
+        return repo.findAll()
+                   .stream()
+                   .mapToDouble(sale -> sale.getTotalPrice()) // unboxed from Double
+                   .sum();
+    }
+    
+    
 }

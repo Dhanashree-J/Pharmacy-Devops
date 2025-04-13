@@ -1,69 +1,116 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LoginPage</title>
-        <style>
-            tr,td{
-                padding: 12px 10px;
-                text-align: left;
-                font-size: 16px;
-            }
-            table{
-                width: 100%;
-            }
-            body {
-                font-family: Arial, sans-serif;
-                height: 100vh;
-                margin: 0;
-            }
-            form {
-                background-color: #fff;
-                padding: 30px;
-                border:1px solid black;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                width: 300px;
-                text-align: center;
-            }
-            input[type="text"], input[type="password"], select {
-                width: 100%;
-                padding: 10px;
-                margin-top: 5px;
-                font-size: 16px;
-                border-radius: 5px;
-                border: 1px solid #ddd;
-            }
-            img{
-                width:400px;
-                height:200px;
-            }
-        </style>
-    </head>
-    <body>
-        <img src="https://s.tmimgcdn.com/scr/1200x627/247500/creative-pharmacy-logo-template_247538-original.png">
-        <center>
-        <form>
-            <table>
-                <tr>
-                    <td>Username:</td>
-                    <td><input type="text" name="username" id="username"></td>
-                </tr>
-                <tr>
-                    <td>Password:</td>
-                    <td><input type="password" name="password" id="password"></td>
-                </tr>
-                <tr>
-                    <td>Login as:</td>
-                    <td><select name="role" id="role">
-                        <option value="Owner">Owner</option>
-                        <option value="Pharmacist">Pharmacist</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;"><input type="submit" value="Login"></td>
-                </tr>
-            </table>
-        </form>
-        </center>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Pharmacy System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+        img {
+            width: 400px;
+            height: 200px;
+            display: block;
+            margin: 40px auto 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border: 1px solid black;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+        }
+        tr, td {
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 16px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        input[type="submit"], button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover, button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .register {
+            margin-top: 15px;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+        a:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://s.tmimgcdn.com/scr/1200x627/247500/creative-pharmacy-logo-template_247538-original.png" alt="Pharmacy Logo">
+
+    <form action="/login" method="post">
+        <!-- Error Message -->
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="username" required /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="password" required /></td>
+            </tr>
+            <tr>
+                <td>Login as:</td>
+                <td>
+                    <select name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="owner">Owner</option>
+                        <option value="pharmacist">Pharmacist</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button type="submit">Login</button>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Registration Link -->
+        <div class="register">
+            <p>New user? <a th:href="@{/register}">Register here</a></p>
+        </div>
+    </form>
+
+</body>
 </html>

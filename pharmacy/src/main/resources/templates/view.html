@@ -75,23 +75,18 @@
             </thead>
             <tbody>
                 <!-- Dynamic content (Product list) will go here -->
-                <tr>
-                    <td>Paracetamol</td>
-                    <td>100</td>
-                    <td>$5</td>
-                    <td>2025-12-01</td>
+                <tr th:each="med : ${medications}">
+                    <td th:text="${med.name}"></td>
+                    <td th:text="${med.stock}"></td>
+                    <td th:text="${med.price}"></td>
+                    <td th:text="${med.expirationDate}"></td>
                 </tr>
-                <tr>
-                    <td>Aspirin</td>
-                    <td>50</td>
-                    <td>$8</td>
-                    <td>2024-10-15</td> 
-                </tr>
+                
             </tbody>
         </table>
 
         <br>
-        <a href="inventory_management.html">Back to Inventory Management</a>
+        <a href="/inventory">Back to Inventory Management</a>
     </div>
 
 </body>

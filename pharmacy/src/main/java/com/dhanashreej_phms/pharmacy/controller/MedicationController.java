@@ -17,48 +17,85 @@ public class MedicationController {
     @Autowired
     private MedicationService service;
 
+    // View Inventory
     @GetMapping("/inventory")
     public String viewInventory(Model model) {
         List<Medication> meds = service.getAll();
         model.addAttribute("medications", meds);
-        return "inventory";
+        return "inventory"; // Renders inventory.html
     }
 
+    // Show Add Medication Form
+    @GetMapping("/medication/add")
+    public String showAddMedicationForm(Model model) {
+        model.addAttribute("medication", new Medication());
+        return "add-product"; // Renders add-product.html
+    }
+
+    // Add Medication (POST)
     @PostMapping("/medication/add")
     public String addMedication(@ModelAttribute Medication med) {
         service.save(med);
-        return "redirect:/inventory";
+        return "redirect:/inventory"; // Redirect to inventory page
     }
 
-    @GetMapping("/medication/delete/{id}")
-    public String deleteMedication(@PathVariable Long id) {
-        service.delete(id);
-        return "redirect:/inventory";
+    // Show Delete Medication Form
+    @GetMapping("/medication/delete")
+    public String showDeleteMedicationForm() {
+        return "delete-product"; // Renders delete-product.html
     }
+
+    @GetMapping("/medication/update")
+    public String showUpdateMedicationForm() {
+        return "update-product"; // Renders delete-product.html
+    }
+
+    // Delete Medication (POST)
+    @PostMapping("/delete-inventory")
+    public String deleteMedication(@RequestParam String productName, Model model) {
+        Medication med = service.getByName(productName);
+        if (med != null) {
+            service.delete(med.getId());
+            return "redirect:/inventory"; // Redirect back to inventory after deletion
+        } else {
+            model.addAttribute("notFound", true);
+            return "delete-product"; // Stay on delete-product page if not found
+        }
+    }
+
+    // Search Medication for Update
     @PostMapping("/update-inventory")
-public String searchProduct(@RequestParam("searchProduct") String name, Model model) {
-    Medication med = service.getByName(name);
-    if (med != null) {
-        model.addAttribute("medication", med);
-    } else {
-        model.addAttribute("notFound", true);
+    public String searchProduct(@RequestParam("searchProduct") String name, Model model) {
+        Medication med = service.getByName(name);
+        if (med != null) {
+            model.addAttribute("medication", med);
+        } else {
+            model.addAttribute("notFound", true);
+        }
+        return "update-product"; // Renders update-product.html
     }
-    return "update-product";
-}
 
-@PostMapping("/update-product")
-public String updateProduct(@RequestParam String productName,
-                            @RequestParam int quantity,
-                            @RequestParam double price,
-                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiryDate) {
-    Medication med = service.getByName(productName);
-    if (med != null) {
-        med.setStock(quantity);
-        med.setPrice(price);
-        med.setExpirationDate(expiryDate);
-        service.save(med);
+    // Update Medication (POST)
+    @PostMapping("/update-product")
+    public String updateProduct(@RequestParam String productName,
+                                @RequestParam int quantity,
+                                @RequestParam double price,
+                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiryDate) {
+        Medication med = service.getByName(productName);
+        if (med != null) {
+            med.setStock(quantity);
+            med.setPrice(price);
+            med.setExpirationDate(expiryDate);
+            service.save(med);
+        }
+        return "redirect:/inventory"; // Redirect to inventory after update
     }
-    return "redirect:/inventory";
-}
+    @GetMapping("/view")
+    public String viewWholeInventory(Model model) {
+        List<Medication> meds = service.getAll();
+        model.addAttribute("medications", meds);
+        return "view";
+    }
+    
 
 }

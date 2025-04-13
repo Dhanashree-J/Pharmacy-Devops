@@ -34,7 +34,6 @@ public class SaleController {
         model.addAttribute("medications", medService.getAll());
         return "sales";
     }
-
     @PostMapping("/sales/add")
     public String addSale(@RequestParam Long medicationId,
                           @RequestParam int quantity,

@@ -32,7 +32,7 @@ public class PrescriptionController {
         List<Prescription> list = service.getAll();
         model.addAttribute("prescriptions", list);
         model.addAttribute("medications", medService.getAll());
-        return "prescriptions";
+        return "prescription-list";
     }
 
     @PostMapping("/prescriptions/add")
