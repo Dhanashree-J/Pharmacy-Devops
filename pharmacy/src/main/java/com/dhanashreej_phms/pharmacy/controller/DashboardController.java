@@ -35,6 +35,19 @@ public String showOwnerDashboard(HttpSession session, Model model) {
         model.addAttribute("pharmacist", pharmacist);
         return "dashboard_pharmacist";  // Returns the dashboard_pharmacist.html page
     }
+        @GetMapping("/dashboard")
+        public String dashboardRedirect(HttpSession session) {
+            String role = (String) session.getAttribute("role");
+    
+            if ("Owner".equalsIgnoreCase(role)) {
+                return "dashboard_owner"; // HTML page for Owner
+            } else if ("Pharmacist".equalsIgnoreCase(role)) {
+                return "dashboard_pharmacist"; // HTML page for Pharmacist
+            } else {
+                return "login"; // fallback if no role found
+            }
+        }
+    
 //     @GetMapping("/inventory")
 // public String inventoryPage() {
 //     return "inventory";

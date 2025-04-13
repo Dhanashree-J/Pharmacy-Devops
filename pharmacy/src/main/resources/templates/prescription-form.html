@@ -1,34 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Prescription</title>
+    <title>New Prescription</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+    
+        form {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+        }
+    
+        label {
+            font-weight: 600;
+            display: block;
+            margin: 10px 0 5px;
+            color: #34495e;
+        }
+    
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+    
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+    
+        th {
+            background-color: #f1f1f1;
+            color: #2c3e50;
+        }
+    
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+    
+        button:hover {
+            background-color: #2980b9;
+        }
+    
+        button[type="submit"] {
+            background-color: #2ecc71;
+        }
+    
+        button[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+    </style>
+    
 </head>
 <body>
+    <h2>Create New Prescription</h2>
+    <div th:if="${error}" style="color: red; margin-bottom: 20px;">
+        <p th:text="${error}"></p>
+    </div>    
+    <form action="/prescriptions/add" method="post">
+        <label>Patient Name:</label>
+        <input type="text" name="patientName" required><br><br>
 
-    <h1>Create Prescription</h1>
-    <form action="/prescriptions/add" method="POST">
-        <label for="patientName">Patient Name:</label>
-        <input type="text" id="patientName" name="patientName" required>
+        <label>Pharmacist Username:</label>
+        <input type="text" name="pharmacistUsername" required><br><br>
 
-        <label for="medicationId">Select Medication:</label>
-        <select id="medicationId" name="medicationId" required>
-            <option value="">Select Medication</option>
-            <th:block th:each="medication : ${medications}">
-                <option th:value="${medication.id}" th:text="${medication.name}"></option>
-            </th:block>
-        </select>
-
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required>
-        
-        <label for="pharmacistUsername">Pharmacist Username:</label>
-        <input type="text" id="pharmacistUsername" name="pharmacistUsername" required>
-
-
+        <table id="medicationTable">
+            <thead>
+                <tr>
+                    <th>Medication</th>
+                    <th>Quantity</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody id="medicationBody">
+                <tr>
+                    <td>
+                        <select name="medicationIds" required>
+                            <option value="">Select</option>
+                            <th:block th:each="m : ${medications}">
+                                <option th:value="${m.id}" th:text="${m.name}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                    <td><input type="number" name="quantities" required></td>
+                    <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addRow()">Add Medication</button>
+        <br><br>
         <button type="submit">Prescribe</button>
     </form>
 
+    <script>
+        function addRow() {
+            const row = document.querySelector("#medicationBody tr").cloneNode(true);
+            row.querySelectorAll("input").forEach(input => input.value = "");
+            document.getElementById("medicationBody").appendChild(row);
+        }
+
+        function removeRow(btn) {
+            const row = btn.parentNode.parentNode;
+            if (document.getElementById("medicationBody").rows.length > 1) {
+                row.remove();
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,15 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prescription Created</title>
+    <title>Prescription Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .receipt {
+            display: inline-block;
+            background-color: #fff;
+            padding: 30px;
+            border: 2px dashed #2ecc71;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .receipt h2 {
+            color: #27ae60;
+        }
+
+        .receipt p {
+            text-align: left;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Prescription Created Successfully!</h1>
-    <p>The prescription has been successfully added.</p>
-    <a href="/prescriptions">View All Prescriptions</a>
+    <div class="receipt">
+        <h2>Prescription Created!</h2>
+        <p><strong>Patient:</strong> <span th:text="${patientName}"></span></p>
+        <p><strong>Pharmacist:</strong> <span th:text="${pharmacist.username}"></span></p>
 
+        <p><strong>Medication:</strong>
+            <h3>Medications:</h3>
+            <table>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+            </tr>
+            <tr th:each="pres : ${prescriptions}">
+                <td th:text="${pres.medication.name}"></td>
+                <td th:text="${pres.quantity}"></td>
+            </tr>
+            </table>
+
+       <p><strong>Date:</strong> <span th:text="${#dates.format(prescription.datePrescribed, 'yyyy-MM-dd HH:mm')}"></span></p>
+    </div>
+
+    <a href="/prescriptions/add" class="button">Create Another Prescription</a>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prescription Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .receipt {
+            display: inline-block;
+            background-color: #fff;
+            padding: 30px;
+            border: 2px dashed #2ecc71;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .receipt h2 {
+            color: #27ae60;
+        }
+
+        .receipt p {
+            text-align: left;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+
+</head>
+<body>
+    <h2>Prescription Created!</h2>
+
+    <p><strong>Patient:</strong> <span th:text="${patientName}"></span></p>
+    <p><strong>Pharmacist:</strong> <span th:text="${pharmacist.username}"></span></p>
+
+    <h3>Medications:</h3>
+    <table>
+        <tr>
+            <th>Medication</th>
+            <th>Quantity</th>
+        </tr>
+        <tr th:each="pres : ${prescriptions}">
+            <td th:text="${pres.medication.name}"></td>
+            <td th:text="${pres.quantity}"></td>
+        </tr>
+    </table>
+
+    <a href="/prescriptions/add">Prescribe Another</a>
 </body>
 </html>

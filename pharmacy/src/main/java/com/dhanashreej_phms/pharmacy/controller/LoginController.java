@@ -38,6 +38,7 @@ public String processLogin(@RequestParam String username, @RequestParam String p
     Login user2 = serv.log(username, password, role);
     if (user2 != null) {
         session.setAttribute("loggedInUsername", user2.getUsername());
+        session.setAttribute("role", user2.getRole());
         if ("Owner".equals(user2.getRole())) {
             return "redirect:/dashboard_owner";
         } else if ("Pharmacist".equals(user2.getRole())) {

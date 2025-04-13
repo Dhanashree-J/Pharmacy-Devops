@@ -78,20 +78,21 @@
     <div class="container">
         <div class="form-container">
             <form action="/medication/add" method="POST">
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required><br><br>
-
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" required><br><br>
-
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+            
+                <label for="stock">Quantity:</label>
+                <input type="number" id="stock" name="stock" required><br><br>
+            
                 <label for="price">Price:</label>
                 <input type="number" id="price" name="price" step="0.01" required><br><br>
-
-                <label for="expiryDate">Expiry Date:</label>
-                <input type="date" id="expiryDate" name="expiryDate" required><br><br>
-
+            
+                <label for="expirationDate">Expiry Date:</label>
+                <input type="date" id="expirationDate" name="expirationDate" required><br><br>
+            
                 <input type="submit" value="Add Product">
             </form>
+            
 
             <br>
             <a href="inventory_management.html">Back to Inventory Management</a>

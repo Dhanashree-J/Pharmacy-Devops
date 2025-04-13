@@ -37,6 +37,10 @@ public class MedicationService {
                                    .filter(med -> med.getStock() < threshold)
                                    .count();
     }
+    public Medication findById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+    
     
     
 }

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,26 +35,114 @@ public class PrescriptionController {
         model.addAttribute("medications", medService.getAll());
         return "prescription-list";
     }
+    @GetMapping("/prescriptions/add")
+public String showPrescriptionForm(Model model) {
+    model.addAttribute("medications", medService.getAll());
+    return "prescription-form";
+}
 
+    // @PostMapping("/prescriptions/add")
+    // public String addPrescription(@RequestParam String patientName,
+    //                               @RequestParam Long medicationId,
+    //                               @RequestParam int quantity,
+    //                               @RequestParam String pharmacistUsername) {
+    //     Medication med = medService.getById(medicationId);
+
+    //     Login pharmacist = loginService.findByUsername(pharmacistUsername);
+
+    //     Prescription p = new Prescription();
+    //     p.setPatientName(patientName);
+    //     p.setMedication(med);
+    //     p.setQuantity(quantity);
+    //     p.setPharmacist(pharmacist);
+    //     p.setDatePrescribed(LocalDateTime.now());
+
+    //     med.setStock(med.getStock() - quantity); // update inventory
+    //     medService.save(med);
+    //     service.save(p);
+    //     return "redirect:/prescriptions";
+    // }
     @PostMapping("/prescriptions/add")
-    public String addPrescription(@RequestParam String patientName,
-                                  @RequestParam Long medicationId,
-                                  @RequestParam int quantity,
-                                  @RequestParam String pharmacistUsername) {
-        Medication med = medService.getById(medicationId);
-        Login pharmacist = loginService.findByUsername(pharmacistUsername);
+public String addMultipleMedicationsPrescription(
+        @RequestParam String patientName,
+        @RequestParam String pharmacistUsername,
+        @RequestParam("medicationIds") List<Long> medicationIds,
+        @RequestParam("quantities") List<Integer> quantities,
+        Model model) {
 
-        Prescription p = new Prescription();
-        p.setPatientName(patientName);
-        p.setMedication(med);
-        p.setQuantity(quantity);
-        p.setPharmacist(pharmacist);
-        p.setDatePrescribed(LocalDateTime.now());
-
-        med.setStock(med.getStock() - quantity); // update inventory
-        medService.save(med);
-        service.save(p);
-        return "redirect:/prescriptions";
+    Login pharmacist = loginService.findByUsername(pharmacistUsername);
+    if (pharmacist == null) {
+        model.addAttribute("error", "Invalid pharmacist username.");
+        model.addAttribute("medications", medService.getAll());
+        return "prescription-form";
     }
 
+    List<Prescription> prescriptions = new ArrayList<>();
+
+    for (int i = 0; i < medicationIds.size(); i++) {
+        Long medId = medicationIds.get(i);
+        int qty = quantities.get(i);
+
+        Medication med = medService.getById(medId);
+        if (med.getStock() < qty) {
+            model.addAttribute("error", "Insufficient stock for: " + med.getName());
+            model.addAttribute("medications", medService.getAll()); // Needed to repopulate dropdown
+            return "prescription-form";
+        }
+
+        med.setStock(med.getStock() - qty);
+        medService.save(med);
+
+        Prescription prescription = new Prescription();
+        prescription.setPatientName(patientName);
+        prescription.setPharmacist(pharmacist);
+        prescription.setMedication(med);
+        prescription.setQuantity(qty);
+        prescription.setDatePrescribed(LocalDateTime.now());
+
+        service.save(prescription);
+        prescriptions.add(prescription);
+    }
+
+    model.addAttribute("patientName", patientName);
+    model.addAttribute("pharmacist", pharmacist);
+    model.addAttribute("prescriptions", prescriptions);
+    return "prescription-success";
 }
+
+//     @PostMapping("/prescription/submit")
+// public String submitPrescription(@ModelAttribute Prescription prescription, Model model) {
+//     // Get the Medication object from the Prescription
+//     Medication medication = prescription.getMedication();
+    
+//     // Check if the quantity prescribed is greater than the stock available
+//     if (prescription.getQuantity() > medication.getStock()) {
+//         model.addAttribute("error", "Quantity cannot be greater than available stock.");
+//         return "prescription-form";  // Return to the form with an error message
+//     }
+
+//     // Proceed with saving the prescription if the validation passes
+//     prescription.setDatePrescribed(LocalDateTime.now());  // Set the current date and time for when the prescription is written
+//     service.save(prescription);  // Save the prescription using your service
+//     return "prescription-success";  // Redirect to the success page
+}
+
+
+
+
+
+//     @PostMapping("/prescriptions/add")
+//     public String addPrescription(@ModelAttribute Prescription prescription, Model model) {
+//     Medication medication = medService.findById(prescription.getMedication().getId());
+
+//     if (medication.getStock() < prescription.getQuantity()) {
+//         model.addAttribute("error", "Insufficient stock for " + medication.getName());
+//         return "prescription-form";  // back to form with error message
+//     }
+
+//     // Otherwise proceed
+//     medication.setStock(medication.getStock() - prescription.getQuantity()); // reduce stock
+//     medService.save(medication);  // update stock
+//     service.save(prescription); // save prescription
+//     return "redirect:/prescriptions";
+// }

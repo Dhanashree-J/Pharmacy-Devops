@@ -1,6 +1,8 @@
 package com.dhanashreej_phms.pharmacy.controller;
 
+import com.dhanashreej_phms.pharmacy.domain.Login;
 import com.dhanashreej_phms.pharmacy.domain.Medication;
+import com.dhanashreej_phms.pharmacy.service.LoginService;
 import com.dhanashreej_phms.pharmacy.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,13 +20,31 @@ public class MedicationController {
     @Autowired
     private MedicationService service;
 
-    // View Inventory
+    // @Autowired
+    // private LoginService loginService;
+
+    //View Inventory
     @GetMapping("/inventory")
     public String viewInventory(Model model) {
         List<Medication> meds = service.getAll();
         model.addAttribute("medications", meds);
         return "inventory"; // Renders inventory.html
     }
+
+//     @GetMapping("/inventory")
+// public String viewInventory(Model model, Principal principal) {
+//     List<Medication> meds = service.getAll();
+//     model.addAttribute("medications", meds);
+
+//     // Get the logged-in user's role
+//     String username = principal.getName();
+//     Login user = loginService.findByUsername(username); // or from session if you're storing user info
+
+//     model.addAttribute("role", user.getRole()); // assumes "owner" or "pharmacist"
+//     return "inventory";
+// }
+
+
 
     // Show Add Medication Form
     @GetMapping("/medication/add")
