@@ -3,6 +3,7 @@ package com.dhanashreej_phms.pharmacy.controller;
 import com.dhanashreej_phms.pharmacy.domain.Login;
 import com.dhanashreej_phms.pharmacy.domain.Medication;
 import com.dhanashreej_phms.pharmacy.domain.Sale;
+import com.dhanashreej_phms.pharmacy.dto.SalesSummary;
 import com.dhanashreej_phms.pharmacy.service.LoginService;
 import com.dhanashreej_phms.pharmacy.service.MedicationService;
 import com.dhanashreej_phms.pharmacy.service.SaleService;
@@ -27,13 +28,21 @@ public class SaleController {
     @Autowired
     private LoginService loginService;
 
+    // @GetMapping("/sales")
+    // public String viewSales(Model model) {
+    //     List<Sale> sales = service.getAll();
+    //     model.addAttribute("sales", sales);
+    //     model.addAttribute("medications", medService.getAll());
+    //     return "sales";
+    // }
+
     @GetMapping("/sales")
-    public String viewSales(Model model) {
-        List<Sale> sales = service.getAll();
-        model.addAttribute("sales", sales);
-        model.addAttribute("medications", medService.getAll());
+    public String viewSalesSummary(Model model) {
+        List<SalesSummary> salesSummary = service.getDailySalesSummary();
+        model.addAttribute("salesSummary", salesSummary);
         return "sales";
     }
+
     @PostMapping("/sales/add")
     public String addSale(@RequestParam Long medicationId,
                           @RequestParam int quantity,

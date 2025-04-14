@@ -1,48 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Sales Report</title>
+    <title>Sales Summary</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a237e;
+            margin-bottom: 30px;
+        }
+
+        .summary-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
+
         th, td {
-            padding: 8px;
+            padding: 14px 18px;
             text-align: left;
+            border-bottom: 1px solid #eee;
         }
-        h1 {
-            text-align: center;
+
+        th {
+            background-color: #3f51b5;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
         }
-    </style>
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td:last-child {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+     </style>
 </head>
 <body>
 
-    <h1>Sales Report</h1>
+<h2>📈 Daily Sales Summary</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Medication</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Loop through the list of sales and display each record -->
-            <tr th:each="sale : ${sales}">
-                <td th:text="${sale.date}"></td> <!-- Date of sale -->
-                <td th:text="${sale.medication.name}"></td> <!-- Medication name (assuming sale has a medication object) -->
-                <td th:text="${sale.quantity}"></td> <!-- Quantity sold -->
-                <td th:text="${sale.total}"></td> <!-- Total sale amount -->
-            </tr>
-        </tbody>
-    </table>
-
+<div class="summary-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Pharmacist</th>
+                    <th>Total Prescriptions</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="sale : ${salesSummary}">
+                    <td th:text="${sale.date}"></td>
+                    <!-- Only display the pharmacist's name -->
+                    <td th:text="${sale.pharmacistUsername}"></td>
+                    <td th:text="${sale.totalPrescriptions}"></td>
+                    <td th:text="${sale.totalRevenue}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
