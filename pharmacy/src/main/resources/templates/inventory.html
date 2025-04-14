@@ -48,6 +48,21 @@
         .button-grid a:hover {
             background-color: #2980b9;
         }
+        .back-btn {
+    padding: 12px 24px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #27ae60;
+}
+
     </style>
 </head>
 <body>
@@ -62,8 +77,10 @@
         <!-- Existing button grid stays unchanged -->
 
 <!-- Add these conditionally rendered links -->
-<!-- inventory.html -->
-<a th:href="@{/dashboard}" class="btn btn-primary">Back to Dashboard</a>
+<div style="text-align: center; margin-top: 40px;">
+    <a th:href="@{/dashboard}" class="btn back-btn">Back to Dashboard</a>
+</div>
+
 
     </div>
 </body>

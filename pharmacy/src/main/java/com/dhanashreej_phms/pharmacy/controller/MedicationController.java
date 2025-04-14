@@ -28,18 +28,6 @@ public class MedicationController {
         return "inventory"; // Renders inventory.html
     }
 
-//     @GetMapping("/inventory")
-// public String viewInventory(Model model, Principal principal) {
-//     List<Medication> meds = service.getAll();
-//     model.addAttribute("medications", meds);
-
-//     // Get the logged-in user's role
-//     String username = principal.getName();
-//     Login user = loginService.findByUsername(username); // or from session if you're storing user info
-
-//     model.addAttribute("role", user.getRole()); // assumes "owner" or "pharmacist"
-//     return "inventory";
-// }
 
 
 
@@ -82,20 +70,6 @@ public class MedicationController {
         }
     }
 
-
-
-    // Search Medication for Update
-    // @PostMapping("/update-inventory")
-    // public String searchProduct(@RequestParam("searchProduct") String name, Model model) {
-    //     Medication med = service.getByName(name);
-    //     if (med != null) {
-    //         model.addAttribute("medication", med);
-    //     } else {
-    //         model.addAttribute("notFound", true);
-    //     }
-    //     return "update-product"; // Renders update-product.html
-    // }
-
     //With Error Logs
     @PostMapping("/update-inventory")
 public String searchProduct(@RequestParam("searchProduct") String name, Model model) {
@@ -125,22 +99,6 @@ public String updateProduct(@RequestParam Long id,
     }
     return "redirect:/inventory";
 }
-
-    // Update Medication (POST)
-    // @PostMapping("/update-product")
-    // public String updateProduct(@RequestParam String productName,
-    //                             @RequestParam int quantity,
-    //                             @RequestParam double price,
-    //                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiryDate) {
-    //     Medication med = service.getByName(productName);
-    //     if (med != null) {
-    //         med.setStock(quantity);
-    //         med.setPrice(price);
-    //         med.setExpirationDate(expiryDate);
-    //         service.save(med);
-    //     }
-    //     return "redirect:/inventory"; // Redirect to inventory after update
-    // }
     @GetMapping("/view")
     public String viewWholeInventory(Model model) {
         List<Medication> meds = service.getAllActive();

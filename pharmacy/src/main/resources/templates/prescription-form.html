@@ -87,6 +87,21 @@
         button[type="submit"]:hover {
             background-color: #27ae60;
         }
+        .back-btn {
+    padding: 12px 24px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #27ae60;
+}
+
     </style>
     
 </head>
@@ -129,7 +144,9 @@
         <br><br>
         <button type="submit">Prescribe</button>
     </form>
-
+    <div style="text-align: center; margin-top: 40px;">
+        <a th:href="@{/dashboard}" class="btn back-btn">Back to Dashboard</a>
+    </div>
     <script>
         function addRow() {
             const row = document.querySelector("#medicationBody tr").cloneNode(true);

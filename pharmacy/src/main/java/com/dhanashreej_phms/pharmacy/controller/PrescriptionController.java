@@ -149,27 +149,6 @@ public String showPrescriptionForm(Model model) {
     return "prescription-form";
 }  //Correct code
 
-    // @PostMapping("/prescriptions/add")
-    // public String addPrescription(@RequestParam String patientName,
-    //                               @RequestParam Long medicationId,
-    //                               @RequestParam int quantity,
-    //                               @RequestParam String pharmacistUsername) {
-    //     Medication med = medService.getById(medicationId);
-
-    //     Login pharmacist = loginService.findByUsername(pharmacistUsername);
-
-    //     Prescription p = new Prescription();
-    //     p.setPatientName(patientName);
-    //     p.setMedication(med);
-    //     p.setQuantity(quantity);
-    //     p.setPharmacist(pharmacist);
-    //     p.setDatePrescribed(LocalDateTime.now());
-
-    //     med.setStock(med.getStock() - quantity); // update inventory
-    //     medService.save(med);
-    //     service.save(p);
-    //     return "redirect:/prescriptions";
-    // }
     @PostMapping("/prescriptions/add")
 public String addMultipleMedicationsPrescription(
         @RequestParam String patientName,
@@ -231,39 +210,4 @@ public String addMultipleMedicationsPrescription(
     return "prescription-success";
 }
 
-//     @PostMapping("/prescription/submit")
-// public String submitPrescription(@ModelAttribute Prescription prescription, Model model) {
-//     // Get the Medication object from the Prescription
-//     Medication medication = prescription.getMedication();
-    
-//     // Check if the quantity prescribed is greater than the stock available
-//     if (prescription.getQuantity() > medication.getStock()) {
-//         model.addAttribute("error", "Quantity cannot be greater than available stock.");
-//         return "prescription-form";  // Return to the form with an error message
-//     }
-
-//     // Proceed with saving the prescription if the validation passes
-//     prescription.setDatePrescribed(LocalDateTime.now());  // Set the current date and time for when the prescription is written
-//     service.save(prescription);  // Save the prescription using your service
-//     return "prescription-success";  // Redirect to the success page
 }
-
-
-
-
-
-//     @PostMapping("/prescriptions/add")
-//     public String addPrescription(@ModelAttribute Prescription prescription, Model model) {
-//     Medication medication = medService.findById(prescription.getMedication().getId());
-
-//     if (medication.getStock() < prescription.getQuantity()) {
-//         model.addAttribute("error", "Insufficient stock for " + medication.getName());
-//         return "prescription-form";  // back to form with error message
-//     }
-
-//     // Otherwise proceed
-//     medication.setStock(medication.getStock() - prescription.getQuantity()); // reduce stock
-//     medService.save(medication);  // update stock
-//     service.save(prescription); // save prescription
-//     return "redirect:/prescriptions";
-// }

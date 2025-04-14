@@ -46,6 +46,12 @@ public class MedicationService {
         return repo.findById(id).orElse(null);
     }
     
+    public int getLowStockCount() {
+        return (int) repo.findAll().stream()
+            .filter(m -> m.getStock() < 10) // or your threshold
+            .count();
+    }
+    
     
     
 }

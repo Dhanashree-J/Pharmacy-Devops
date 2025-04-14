@@ -28,15 +28,7 @@ public class SaleController {
     @Autowired
     private LoginService loginService;
 
-    // @GetMapping("/sales")
-    // public String viewSales(Model model) {
-    //     List<Sale> sales = service.getAll();
-    //     model.addAttribute("sales", sales);
-    //     model.addAttribute("medications", medService.getAll());
-    //     return "sales";
-    // }
-
-    @GetMapping("/sales")
+        @GetMapping("/sales")
     public String viewSalesSummary(Model model) {
         List<SalesSummary> salesSummary = service.getDailySalesSummary();
         model.addAttribute("salesSummary", salesSummary);
@@ -53,12 +45,9 @@ public class SaleController {
 
         double total = med.getPrice() * quantity;
         Sale sale = new Sale();
-        sale.setMedication(med);
-        sale.setQuantity(quantity);
         sale.setTotalPrice(total);
         sale.setPharmacist(pharmacist);
-        sale.setPaymentMethod(paymentMethod);
-        sale.setSaleDate(LocalDateTime.now());
+        sale.setDate(LocalDateTime.now());
 
         med.setStock(med.getStock() - quantity); // update inventory
         medService.save(med);
