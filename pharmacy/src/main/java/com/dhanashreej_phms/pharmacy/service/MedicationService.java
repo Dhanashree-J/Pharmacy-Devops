@@ -31,6 +31,11 @@ public class MedicationService {
     public Medication getByName(String name) {
         return repo.findByName(name);
     }
+
+    public List<Medication> getAllActive() {
+        return repo.findByActiveTrue();
+    }
+    
     public int countLowStockItems(int threshold) {
         return (int) repo.findAll()
                                    .stream()

@@ -1,126 +1,82 @@
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Prescription Success</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            padding: 50px;
-            text-align: center;
-        }
-
-        .receipt {
-            display: inline-block;
-            background-color: #fff;
-            padding: 30px;
-            border: 2px dashed #2ecc71;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            width: 400px;
-            margin-bottom: 30px;
-        }
-
-        .receipt h2 {
-            color: #27ae60;
-        }
-
-        .receipt p {
-            text-align: left;
-            font-size: 16px;
-            margin: 8px 0;
-        }
-
-        a.button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        a.button:hover {
-            background-color: #2980b9;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="receipt">
-        <h2>Prescription Created!</h2>
-        <p><strong>Patient:</strong> <span th:text="${patientName}"></span></p>
-        <p><strong>Pharmacist:</strong> <span th:text="${pharmacist.username}"></span></p>
-
-        <p><strong>Medication:</strong>
-            <h3>Medications:</h3>
-            <table>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-            </tr>
-            <tr th:each="pres : ${prescriptions}">
-                <td th:text="${pres.medication.name}"></td>
-                <td th:text="${pres.quantity}"></td>
-            </tr>
-            </table>
-
-       <p><strong>Date:</strong> <span th:text="${#dates.format(prescription.datePrescribed, 'yyyy-MM-dd HH:mm')}"></span></p>
-    </div>
-
-    <a href="/prescriptions/add" class="button">Create Another Prescription</a>
-
-</body>
-</html> -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Prescription Success</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            padding: 50px;
-            text-align: center;
-        }
+         body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 40px;
+        color: #333;
+    }
 
-        .receipt {
-            display: inline-block;
-            background-color: #fff;
-            padding: 30px;
-            border: 2px dashed #2ecc71;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            width: 400px;
-            margin-bottom: 30px;
-        }
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
 
-        .receipt h2 {
-            color: #27ae60;
-        }
+    .receipt {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        padding: 30px 40px;
+        max-width: 600px;
+        margin: auto;
+        border-top: 5px solid #27ae60;
+    }
 
-        .receipt p {
-            text-align: left;
-            font-size: 16px;
-            margin: 8px 0;
-        }
+    .receipt p {
+        font-size: 16px;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
 
-        a.button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+    h3 {
+        margin-top: 30px;
+        font-size: 22px;
+        color: #34495e;
+    }
 
-        a.button:hover {
-            background-color: #2980b9;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+        background-color: #f6f6f6;
+        color: #555;
+        font-weight: 600;
+    }
+
+    td {
+        color: #333;
+    }
+
+    a.button, a {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 10px 20px;
+        background-color: #27ae60;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    a.button:hover, a:hover {
+        background-color: #1e8449;
+    }
+
     </style>
 
 </head>
@@ -135,13 +91,19 @@
         <tr>
             <th>Medication</th>
             <th>Quantity</th>
+            <th>Price</th>
+            <th>Amount</th>
         </tr>
         <tr th:each="pres : ${prescriptions}">
             <td th:text="${pres.medication.name}"></td>
             <td th:text="${pres.quantity}"></td>
+            <td th:text="${pres.medication.price}"></td>
+            <td th:text="${pres.medication.price * pres.quantity}"></td>
         </tr>
     </table>
-
+    <h3 style="margin-top: 20px;">Total Amount: ₹ 
+        <span th:text="${grandTotal}">0.00</span>
+    </h3>    
     <a href="/prescriptions/add">Prescribe Another</a>
 </body>
 </html>

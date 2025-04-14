@@ -59,28 +59,31 @@
 </head>
 <body>
 
-    <h1>List of Prescriptions</h1>
+    <h1>Prescriptions List</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>Medication</th>
-                <th>Quantity</th>
-                <th>Date Prescribed</th>
-            </tr>
-        </thead>
-        <tbody>
-            <th:block th:each="prescription : ${prescriptions}">
+<th:block th:each="group : ${prescriptionsGrouped}">
+    <div style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+        <p><strong>Patient:</strong> <span th:text="${group.patientName}"></span></p>
+        <span th:text="${prescription.pharmacist != null ? prescription.pharmacist.username : 'N/A'}"></span>
+        <p><strong>Date:</strong> <span th:text="${#dates.format(group.datePrescribed, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+        <table>
+            <thead>
                 <tr>
-                    <td th:text="${prescription.patientName}"></td>
-                    <td th:text="${prescription.medication.name}"></td>
-                    <td th:text="${prescription.quantity}"></td>
-                    <td th:text="${#dates.format(prescription.datePrescribed, 'yyyy-MM-dd HH:mm')}"></td>
+                    <th>Medication</th>
+                    <th>Quantity</th>
                 </tr>
-            </th:block>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <tr th:each="pres : ${group.items}">
+                    <td th:text="${pres.medication.name}"></td>
+                    <td th:text="${pres.quantity}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</th:block>
+
 
 </body>
 </html>

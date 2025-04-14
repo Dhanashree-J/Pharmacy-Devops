@@ -16,6 +16,9 @@ public class Medication {
     private String name;
     private int stock;
     private double price;
+    @Column(nullable = false)
+    private boolean active = true;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expirationDate;
@@ -30,6 +33,14 @@ public class Medication {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getName() {

@@ -14,7 +14,8 @@ public class PrescriptionService {
     private PrescriptionRepo repo;
 
     public List<Prescription> getAll() {
-        return repo.findAll();
+        List<Prescription> prescriptions = repo.findAll();
+        return prescriptions;
     }
 
     public void save(Prescription p) {

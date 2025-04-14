@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            height: 100vh;
             margin: 0;
             background-color: #f4f7fc;
         }
@@ -19,9 +18,9 @@
         }
         .container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 100px);
         }
         .form-container {
             background-color: #fff;
@@ -74,6 +73,15 @@
             margin-top: 20px;
             color: #333;
         }
+        .second-form{
+            background-color: #fff;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            margin-top:10px;
+        }
     </style>
 </head>
 <body>
@@ -88,30 +96,64 @@
 
                 <button type="submit">Search</button>
             </form>
-
-            <h2>Product Details</h2>
+            </div>
+           <!-- Only show form if a medication is present -->
+           <div th:if="${medication != null}" class="second-form">
             <form action="/update-product" method="POST">
+                <input type="hidden" name="id" th:value="${medication.id}" />
                 <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" value="Aspirin" readonly><br><br>
+                <input type="text" id="productName" name="productName" 
+                    th:value="${medication.name}" readonly><br><br>
 
                 <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" value="50"><br><br>
+                <input type="number" id="quantity" name="quantity" 
+                    th:value="${medication.stock}"><br><br>
 
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" value="8"><br><br>
+                <input type="number" id="price" name="price" step="0.01" 
+                    th:value="${medication.price}"><br><br>
 
                 <label for="expiryDate">Expiry Date:</label>
-                <input type="date" id="expiryDate" name="expiryDate" value="2024-10-15"><br><br>
+                <input type="date" id="expiryDate" name="expiryDate" 
+                    th:value="${medication.expirationDate}"><br><br>
 
                 <input type="submit" value="Update Product">
             </form>
-
-            <br>
-            <a href="inventory_management.html">Back to Inventory Management</a>
+        </div>
+        <div th:if="${notFound}">
+            <p style="color: red;">Product not found. Please try again.</p>
+        </div>
+        <br>
+            <a href="/inventory">Back to Inventory Management</a>
         </div>
     </div>
 
 </body>
 </html>
 
+<!-- Only show form if a medication is present -->
+<!-- <div th:if="${medication != null}">
+    <form action="/update-product" method="POST">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" 
+            th:value="${medication.name}" readonly><br><br>
 
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" 
+            th:value="${medication.stock}"><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" 
+            th:value="${medication.price}"><br><br>
+
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="date" id="expiryDate" name="expiryDate" 
+            th:value="${medication.expirationDate}"><br><br>
+
+        <input type="submit" value="Update Product">
+    </form>
+</div>
+<div th:if="${notFound}">
+    <p style="color: red;">Product not found. Please try again.</p>
+</div>
+<br> -->

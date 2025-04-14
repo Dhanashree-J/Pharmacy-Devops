@@ -6,12 +6,12 @@ import com.dhanashreej_phms.pharmacy.domain.Login;
 import com.dhanashreej_phms.pharmacy.service.MedicationService;
 import com.dhanashreej_phms.pharmacy.service.PrescriptionService;
 import com.dhanashreej_phms.pharmacy.service.LoginService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +28,44 @@ public class PrescriptionController {
     @Autowired
     private LoginService loginService;
 
+//     @GetMapping("/prescriptions")
+// public String listPrescriptions(Model model) {
+//     List<Prescription> allPrescriptions = service.getAll();
+
+//     Map<String, List<Prescription>> grouped = allPrescriptions.stream()
+//         .collect(Collectors.groupingBy(p -> 
+//             p.getPatientName() + "|" + p.getDatePrescribed().toString() + "|" + p.getPharmacist().getUsername()
+//         ));
+
+//     List<PrescriptionGroup> groupedList = new ArrayList<>();
+//     for (Map.Entry<String, List<Prescription>> entry : grouped.entrySet()) {
+//         List<Prescription> groupItems = entry.getValue();
+//         PrescriptionGroup group = new PrescriptionGroup();
+//         group.setPatientName(groupItems.get(0).getPatientName());
+//         group.setDatePrescribed(groupItems.get(0).getDatePrescribed());
+//         group.setPharmacistUsername(groupItems.get(0).getPharmacist().getUsername());
+//         group.setItems(groupItems);
+//         groupedList.add(group);
+//     }
+
+//     model.addAttribute("prescriptionsGrouped", groupedList);
+//     return "prescription-list";
+// }
+
+
     @GetMapping("/prescriptions")
-    public String listPrescriptions(Model model) {
-        List<Prescription> list = service.getAll();
-        model.addAttribute("prescriptions", list);
-        model.addAttribute("medications", medService.getAll());
-        return "prescription-list";
-    }
+public String listPrescriptions(Model model) {
+    List<Prescription> list = service.getAll();
+    model.addAttribute("prescriptions", list);
+    model.addAttribute("medications", medService.getAll());
+    return "prescription-list";  // This returns prescription-list.html
+}
+
     @GetMapping("/prescriptions/add")
 public String showPrescriptionForm(Model model) {
     model.addAttribute("medications", medService.getAll());
     return "prescription-form";
-}
+}  //Correct code
 
     // @PostMapping("/prescriptions/add")
     // public String addPrescription(@RequestParam String patientName,
@@ -84,6 +110,13 @@ public String addMultipleMedicationsPrescription(
         int qty = quantities.get(i);
 
         Medication med = medService.getById(medId);
+
+        if (med.getExpirationDate() != null && med.getExpirationDate().isBefore(LocalDate.now())) {
+            model.addAttribute("error", "Cannot prescribe expired medication: " + med.getName());
+            model.addAttribute("medications", medService.getAll()); // Repopulate dropdown
+            return "prescription-form"; 
+        }
+
         if (med.getStock() < qty) {
             model.addAttribute("error", "Insufficient stock for: " + med.getName());
             model.addAttribute("medications", medService.getAll()); // Needed to repopulate dropdown
@@ -94,6 +127,8 @@ public String addMultipleMedicationsPrescription(
         medService.save(med);
 
         Prescription prescription = new Prescription();
+        prescription.setPharmacist(pharmacist); // ← important!
+
         prescription.setPatientName(patientName);
         prescription.setPharmacist(pharmacist);
         prescription.setMedication(med);
@@ -107,6 +142,10 @@ public String addMultipleMedicationsPrescription(
     model.addAttribute("patientName", patientName);
     model.addAttribute("pharmacist", pharmacist);
     model.addAttribute("prescriptions", prescriptions);
+    double grandTotal = prescriptions.stream()
+    .mapToDouble(p -> p.getMedication().getPrice() * p.getQuantity())
+    .sum();
+    model.addAttribute("grandTotal", grandTotal);
     return "prescription-success";
 }
 
