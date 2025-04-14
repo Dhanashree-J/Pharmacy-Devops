@@ -61,29 +61,31 @@
 
     <h1>Prescriptions List</h1>
 
-<th:block th:each="group : ${prescriptionsGrouped}">
-    <div style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
-        <p><strong>Patient:</strong> <span th:text="${group.patientName}"></span></p>
-        <span th:text="${prescription.pharmacist != null ? prescription.pharmacist.username : 'N/A'}"></span>
-        <p><strong>Date:</strong> <span th:text="${#dates.format(group.datePrescribed, 'yyyy-MM-dd HH:mm')}"></span></p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Medication</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="pres : ${group.items}">
-                    <td th:text="${pres.medication.name}"></td>
-                    <td th:text="${pres.quantity}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</th:block>
-
-
+    <th:block th:each="group : ${prescriptionsGrouped}">
+        <div style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+            <p><strong>Patient:</strong> <span th:text="${group.patientName}"></span></p>
+            <p><strong>Pharmacist:</strong> <span th:text="${group.pharmacistUsername}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${#temporals.format(group.datePrescribed, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medication</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pres : ${group.items}">
+                        <td th:text="${pres.medication.name}"></td>
+                        <td th:text="${pres.quantity}"></td>
+                        <td th:text="${pres.medication.price}"></td>
+                        <td th:text="${pres.medication.price * pres.quantity}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Grand Total:</strong> ₹<span th:text="${group.grandTotal}"></span></p>
+        </div>
+    </th:block>
 </body>
 </html>
